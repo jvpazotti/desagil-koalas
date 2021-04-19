@@ -24,16 +24,33 @@ public class DataFrame {
 		}
 		return s;
 	}
-	private double MediaVar(List<Double> values, double m) {
+	
+	private double Media(List<Double>values) {
+		
+		double s = 0;
+		for (double value: values) {
+			s += value;
+		}
+		return s/values.size();
+	}	
+	private double Var(List<Double> values, double m) {
 		double s = 0;
 		for (double value: values) {
 			s += Math.pow(value - m, 2);
 		}
-		return s;
+		return s/values.size();
 	}
 	
+	
 		
-		
+	private double dp(List<Double> values, double m) {
+		double s = 0;
+		for (double value: values) {
+			s += Math.pow(value - m, 2);
+		}
+		double var = s/values.size();
+		return Math.sqrt(var);
+	}	
 	
 
 	public double min(String label) {
@@ -93,9 +110,7 @@ public class DataFrame {
 		if (values.size() == 0) {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
-
-		
-		return Soma(values) / values.size();
+		return Media(values);
 	}
 
 	public double var(String label) {
@@ -107,13 +122,9 @@ public class DataFrame {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
 
-		double s;
-
-		
 		double m = Soma(values) / values.size();
 
-		
-		return MediaVar(values,m) / values.size();
+		return Var(values,m);
 	}
 
 	public double std(String label) {
@@ -125,16 +136,11 @@ public class DataFrame {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
 
-		double s, m;
+		double m;
 
-		
 		m = Soma(values) / values.size();
-
 		
-		s = MediaVar(values,m) / values.size();
-		
-		m=s/values.size();
 
-		return Math.sqrt(m);
+		return dp(values,m);
 	}
 }
