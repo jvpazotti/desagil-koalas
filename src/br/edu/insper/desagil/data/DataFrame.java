@@ -15,6 +15,26 @@ public class DataFrame {
 	public void addColumn(String label, List<Double> values) {
 		this.columns.put(label, new ArrayList<>(values));
 	}
+	
+	private double Soma(List<Double>values) {
+		
+		double s = 0;
+		for (double value: values) {
+			s += value;
+		}
+		return s;
+	}
+	private double MediaVar(List<Double> values, double m) {
+		double s = 0;
+		for (double value: values) {
+			s += Math.pow(value - m, 2);
+		}
+		return s;
+	}
+	
+		
+		
+	
 
 	public double min(String label) {
 		if (!this.columns.containsKey(label)) {
@@ -61,11 +81,8 @@ public class DataFrame {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
 
-		double s = 0;
-		for (double value: values) {
-			s += value;
-		}
-		return s;
+	
+		return Soma(values);
 	}
 
 	public double avg(String label) {
@@ -77,11 +94,8 @@ public class DataFrame {
 			throw new DataFrameException("Column " + label + " is empty!");
 		}
 
-		double s = 0;
-		for (double value: values) {
-			s += value;
-		}
-		return s / values.size();
+		
+		return Soma(values) / values.size();
 	}
 
 	public double var(String label) {
@@ -95,17 +109,11 @@ public class DataFrame {
 
 		double s;
 
-		s = 0;
-		for (double value: values) {
-			s += value;
-		}
-		double m = s / values.size();
+		
+		double m = Soma(values) / values.size();
 
-		s = 0;
-		for (double value: values) {
-			s += Math.pow(value - m, 2);
-		}
-		return s / values.size();
+		
+		return MediaVar(values,m) / values.size();
 	}
 
 	public double std(String label) {
@@ -119,17 +127,13 @@ public class DataFrame {
 
 		double s, m;
 
-		s = 0;
-		for (double value: values) {
-			s += value;
-		}
-		m = s / values.size();
+		
+		m = Soma(values) / values.size();
 
-		s = 0;
-		for (double value: values) {
-			s += Math.pow(value - m, 2);
-		}
-		m = s / values.size();
+		
+		s = MediaVar(values,m) / values.size();
+		
+		m=s/values.size();
 
 		return Math.sqrt(m);
 	}
